@@ -5,11 +5,10 @@ import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
-import java.util.Scanner;
 
 public class Lox {
 
-    static boolean hasError = false;
+    static boolean hadError = false;
 
     static void error(int line, String message) {
         report(line, "", message);
@@ -18,7 +17,7 @@ public class Lox {
     private static void report(int line, String where, String message) {
         System.err.println(
             "[line " + line + "] Error" + where + ": " + message);
-        hasError = true;
+        hadError = true;
     }
 
     public static void run(String source){
@@ -41,7 +40,7 @@ public class Lox {
             if(line == null) break;
             run(line);
             // dont kill session if there is an error
-            hasError = false;
+            hadError = false;
         }
     }
     
@@ -50,7 +49,7 @@ public class Lox {
         run(new String(bytes, Charset.defaultCharset()));
 
         // error in source code
-        if(hasError) System.exit(65);
+        if(hadError) System.exit(65);
     }
 
 
