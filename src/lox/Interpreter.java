@@ -6,9 +6,11 @@ import lox.Expr.Assign;
 import lox.Expr.Binary;
 import lox.Expr.Grouping;
 import lox.Expr.Literal;
+import lox.Expr.Logical;
 import lox.Expr.Unary;
 import lox.Expr.Variable;
 import lox.Stmt.Expression;
+import lox.Stmt.If;
 import lox.Stmt.Print;
 import lox.Stmt.Var;
 
@@ -195,5 +197,27 @@ public class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
         Object value  = evaluate(expr.value);
         environment.assign(expr.name, value);
         return value;
+    }
+
+    @Override
+    public Void visitIfStmt(If stmt) {
+        if(isTruthy(evaluate(stmt.condition))){
+            execute(stmt.thenBranch);
+        }else if(stmt.elseBranch != null){
+            execute(stmt.elseBranch);
+        }
+        return null;
+    }
+
+    @Override
+    public Object visitLogicalExpr(Logical expr) {
+        Object left = evaluate(expr.left);
+
+        if(expr.operator.type == TokenType.OR){
+            if(isTruthy(left)) return left;
+        }else{
+            if(!isTruthy(left)) return left;
+        }
+        return evaluate(expr.right);
     }
 }
