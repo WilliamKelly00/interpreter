@@ -2,6 +2,7 @@ package lox;
 
 import lox.Expr.Assign;
 import lox.Expr.Binary;
+import lox.Expr.Call;
 import lox.Expr.Grouping;
 import lox.Expr.Literal;
 import lox.Expr.Logical;
@@ -61,6 +62,12 @@ public class AstPrinter implements Expr.Visitor<String> {
 
     @Override
     public String visitLogicalExpr(Logical expr) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public String visitCallExpr(Call expr) {
         // TODO Auto-generated method stub
         return null;
     }
