@@ -13,6 +13,7 @@ import lox.Expr.Grouping;
 import lox.Expr.Literal;
 import lox.Expr.Logical;
 import lox.Expr.Set;
+import lox.Expr.This;
 import lox.Expr.Unary;
 import lox.Expr.Variable;
 import lox.Stmt.Class;
@@ -325,7 +326,7 @@ public class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
             methods.put(method.name.lexeme, function);
         }
 
-        LoxClass klass = new LoxClass(stmt.name.lexeme);
+        LoxClass klass = new LoxClass(stmt.name.lexeme, methods);
         environment.assign(stmt.name, klass);
         return null;
     }
@@ -354,5 +355,10 @@ public class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
         ((LoxInstance)object).set(expr.name, value);
 
         return value;
+    }
+
+    @Override
+    public Object visitThisExpr(This expr) {
+        return lookUpVariable(expr.keyword, expr);
     }
 }
